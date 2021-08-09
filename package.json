@@ -1,6 +1,6 @@
 {
   "name": "node-cli-tools",
-  "version": "0.0.13",
+  "version": "0.0.1",
   "description": "cli, node-cli, cli-tools",
   "main": "index.js",
   "scripts": {
@@ -15,12 +15,14 @@
   "license": "ISC",
   "bin": {
     "node-cli-test": "./bin/test.js",
-    "cgit": "./bin/cgit.js"
+    "cgit": "./bin/cgit/new.js"
   },
   "devDependencies": {
     "eslint": "^7.32.0"
   },
   "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^8.1.0",
     "shelljs": "^0.8.4",
     "yargs": "^17.1.0"
   }

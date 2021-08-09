@@ -7,4 +7,18 @@
 ## 1. npm init
 
 
-##
+## 2. 安装 commander
+
+命令行工具
+
+```bash
+npm install commander -s
+```
+
+## 3. 安装 chalk
+
+命令行高亮提示
+
+```bash
+npm install chalk -s
+```

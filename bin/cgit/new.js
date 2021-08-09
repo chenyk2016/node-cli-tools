@@ -29,4 +29,25 @@ program
     }
   })
 
+program
+  .command('reset')
+  .description('从缓存区删除')
+  .action(() => {
+    shell.exec('git reset -q HEAD -- .')
+  })
+
+program
+  .command('cm <message>')
+  .description('一键保存提交')
+  .option('-p, --push', '执行提交到远程操作')
+  .action((message, options) => {
+    shell.exec('git add .')
+    shell.exec(`git commit -m ${message}`)
+    if(options.push) {
+      shell.exec('git push')
+    }
+  })
+
+
+
 program.parse(process.argv)

@@ -48,6 +48,12 @@ program
     }
   })
 
+program
+  .command('pr create <branch> <title>')
+  .description('创建PR')
+  .action((branch, title) => {
+    shell.exec(`glab mr create --target-branch ${branch}  --title ${title} -f`)
+  })
 
 
 program.parse(process.argv)

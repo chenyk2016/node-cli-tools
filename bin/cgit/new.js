@@ -42,17 +42,29 @@ program
   .option('-p, --push', '执行提交到远程操作')
   .action((message, options) => {
     shell.exec('git add .')
-    shell.exec(`git commit -m ${message}`)
+    shell.exec(`git commit -m "${message}"`)
     if(options.push) {
       shell.exec('git push')
     }
   })
 
-program
-  .command('pr create <branch> <title>')
+// PR--------------------------------------------------------------------
+const MR = program.command('mr').description('pr管理')
+
+MR
+  .command('create <branch> <title>')
+  .option('-a, --auto', '自动合并')
+  .option('-d, --detail', '详细信息')
   .description('创建PR')
-  .action((branch, title) => {
-    shell.exec(`glab mr create --target-branch ${branch}  --title ${title} -f`)
+  .action((branch, title, options) => {
+    const detail = options.detail || ''
+    const res = shell.exec(`glab mr create --target-branch ${branch}  --title "${title}" -d "${detail}" -f -y`)
+
+    if(options.auto) {
+      const id = res.stdout.match(/^\!(\d*)/)[1]
+      shell.exec(`glab mr merge ${id}`)
+    }
+
   })
 
 

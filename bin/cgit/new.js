@@ -58,7 +58,7 @@ MR
   .description('创建PR')
   .action((branch, title, options) => {
     const detail = options.detail || ''
-    const res = shell.exec(`glab mr create --target-branch ${branch}  --title "${title}" -d "${detail}" -f -y`)
+    const res = shell.exec(`glab mr create --target-branch ${branch}  --title "${title}" -d "${detail}" -y`)
 
     if(options.auto) {
       const id = res.stdout.match(/^\!(\d*)/)[1]

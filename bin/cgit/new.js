@@ -41,7 +41,11 @@ program
   .description('一键保存提交')
   .option('-p, --push', '执行提交到远程操作')
   .action((message, options) => {
-    shell.exec('git add .')
+    try {
+      shell.exec('git add .')
+    } catch (error) {
+      // nothing
+    }
     shell.exec(`git commit -m "${message}"`)
     if(options.push) {
       shell.exec('git push')
@@ -67,5 +71,22 @@ MR
 
   })
 
+// auto--------------------------------------------------------------------
+const AUTO = program.command('auto').description('快捷键')
+
+AUTO.command('cmr <branch> <title> [detail]')
+  .action((branch, title, detail, options) => {
+    shell.exec('git add .')
+    shell.exec(`git commit -m "${title}"`)
+    shell.exec('git push')
+
+    chalk.green('提交代码成功')
+
+    const res = shell.exec(`glab mr create --target-branch ${branch}  --title "${title}" -d "${detail}" -y`)
+    const id = res.stdout.match(/^\!(\d*)/)[1]
+    shell.exec(`glab mr merge ${id}`)
+
+    chalk.green(`合并到${branch}成功`)
+  })
 
 program.parse(process.argv)

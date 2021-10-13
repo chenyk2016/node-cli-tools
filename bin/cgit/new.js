@@ -52,17 +52,19 @@ program
     }
   })
 
-// PR--------------------------------------------------------------------
+// MR--------------------------------------------------------------------
 const MR = program.command('mr').description('pr管理')
 
 MR
-  .command('create <branch> <title>')
+  .command('create <branch>')
   .option('-a, --auto', '自动合并')
-  .option('-d, --detail', '详细信息')
+  .option('-m, --remove', '合并后删除原分支')
   .description('创建PR')
-  .action((branch, title, options) => {
-    const detail = options.detail || ''
-    const res = shell.exec(`glab mr create --target-branch ${branch}  --title "${title}" -d "${detail}" -y`)
+  .action((branch, options) => {
+    const m = options.remove ? '--remove-source-branch' : ''
+    // -f --fill自动填充标题
+    // -y --yes不询问直接提交
+    const res = shell.exec(`glab mr create --target-branch ${branch} ${m} -f -y`)
 
     if(options.auto) {
       const id = res.stdout.match(/^\!(\d*)/)[1]

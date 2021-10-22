@@ -57,7 +57,7 @@ const MR = program.command('mr').description('pr管理')
 
 MR
   .command('create <branch>')
-  .option('-t, --title', '标题')
+  .option('-t, --title <title>', '标题')
   .option('-a, --auto', '自动合并')
   .option('-m, --remove', '合并后删除原分支')
   .description('创建PR')

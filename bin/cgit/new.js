@@ -57,20 +57,21 @@ const MR = program.command('mr').description('pr管理')
 
 MR
   .command('create <branch>')
+  .option('-t, --title', '标题')
   .option('-a, --auto', '自动合并')
   .option('-m, --remove', '合并后删除原分支')
   .description('创建PR')
   .action((branch, options) => {
+    const t = options.title ? `--title "${options.title}"` : ''
     const m = options.remove ? '--remove-source-branch' : ''
     // -f --fill自动填充标题
     // -y --yes不询问直接提交
-    const res = shell.exec(`glab mr create --target-branch ${branch} ${m} -f -y`)
+    const res = shell.exec(`glab mr create --target-branch ${branch} ${t} ${m} -f -y`)
 
     if(options.auto) {
       const id = res.stdout.match(/^\!(\d*)/)[1]
       shell.exec(`glab mr merge ${id}`)
     }
-
   })
 
 // auto--------------------------------------------------------------------

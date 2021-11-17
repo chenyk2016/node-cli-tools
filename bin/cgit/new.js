@@ -66,7 +66,7 @@ MR
     const m = options.remove ? '--remove-source-branch' : ''
     // -f --fill自动填充标题
     // -y --yes不询问直接提交
-    const res = shell.exec(`glab mr create --target-branch ${branch} --description '' ${t} ${m} -y`)
+    const res = shell.exec(`glab mr create --target-branch ${branch} --description '' ${t} ${m} -f -y`)
 
     if(options.auto) {
       const id = res.stdout.match(/^\!(\d*)/)[1]

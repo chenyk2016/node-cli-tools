@@ -64,11 +64,14 @@ MR
   .action((branch, options) => {
     const t = options.title ? `--title "${options.title}"` : ''
     const m = options.remove ? '--remove-source-branch' : ''
+
+    const f = t ? '' : '-f'
     // -f --fill自动填充标题
     // -y --yes不询问直接提交
-    const res = shell.exec(`glab mr create --target-branch ${branch} --description '' ${t} ${m} -f -y`)
+    const res = shell.exec(`glab mr create --target-branch ${branch} --description '' ${t} ${m} ${f} -y`)
 
     if(options.auto) {
+      // eslint-disable-next-line
       const id = res.stdout.match(/^\!(\d*)/)[1]
       shell.exec(`glab mr merge ${id}`)
     }
@@ -86,6 +89,7 @@ AUTO.command('cmr <branch> <title> [detail]')
     chalk.green('提交代码成功')
 
     const res = shell.exec(`glab mr create --target-branch ${branch}  --title "${title}" -d "${detail}" -y`)
+    // eslint-disable-next-line
     const id = res.stdout.match(/^\!(\d*)/)[1]
     shell.exec(`glab mr merge ${id}`)
 

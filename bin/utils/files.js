@@ -64,12 +64,16 @@ function pathType(path){
  *
  * @param  {String} from copied file
  * @param  {String} to   target file
+ * @param  {Boolean} coverOld  cover exist old file
  */
-async function copyFile(from, to) {
-  const exist = await isExist(to);
-  if(exist) {
-    throw new Error(`文件 ${to} 已经存在`)
-  }
+async function copyFile(from, to, coverOld) {
+	if (!coverOld) {
+		const exist = await isExist(to);
+		if(exist) {
+			throw new Error(`文件 ${to} 已经存在`)
+		}
+	}
+
 	fs.writeFileSync(to, fs.readFileSync(from));
 }
 
@@ -78,16 +82,19 @@ async function copyFile(from, to) {
  *
  * @param  {String} from
  * @param  {String} to
+ * @param  {Boolean} coverOld  cover exist old file
  */
-async function copyDir(from, to) {
-  const exist = await isExist(to);
+async function copyDir(from, to, coverOld) {
+	const exist = await isExist(to);
 
-  if(exist) {
-    output.error(`目录 ${to} 已经存在`)
-    return '';
-  }
+	if(!coverOld && exist) {
+		output.error(`目录 ${to} 已经存在`)
+		return '';
+	}
 
-  fs.mkdirSync(to);
+	if (!exist) {
+		fs.mkdirSync(to);
+	}
 
 	await fs.readdir(from, (err, paths) => {
 		paths.forEach((path)=>{
@@ -97,7 +104,7 @@ async function copyDir(from, to) {
 				if(stat.isFile()) {
 					fs.writeFileSync(dist, fs.readFileSync(src));
 				} else if(stat.isDirectory()) {
-					copyDir(src, dist);
+					copyDir(src, dist, coverOld);
 				}
 			});
 		});
@@ -118,7 +125,7 @@ function fillPath(pathname) {
  * @param  {String} from which file or directory you wanna copy
  * @param  {String} to   the target file or dir you copyed
  */
-async function copy(from, to) {
+async function copy(from, to, coverOld) {
   from = fillPath(from)
   to = fillPath(to)
 
@@ -141,9 +148,9 @@ async function copy(from, to) {
 		output.info(`start copy ${from} `)
 		const type = await pathType(from);
 		if(type == "file"){
-			await copyFile(from, to); // file copy
+			await copyFile(from, to, coverOld); // file copy
 		}else{
-			await copyDir(from, to); // directory copy
+			await copyDir(from, to, coverOld); // directory copy
 		}
 		output.info(`copy to ${to} success`)
 	}catch(err){

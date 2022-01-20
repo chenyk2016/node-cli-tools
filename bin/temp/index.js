@@ -17,18 +17,38 @@ program
   .command('list')
   .description('列出所有模版文件')
   .action(() => {
-    const allFiles = files.getAllFile( modulesPath )
+    const allFiles = cFiles.getAllFile( modulesPath )
     allFiles.map(item => {
       output.info(item.name)
     })
   })
 
 program
-  .command('add <from> <newName>')
+  .command('add <tempName> <from>')
   .description('向模版添加文件｜目录')
-  .action((from, newName) => {
+  .action((tempName, from) => {
 
-    cFiles.copy(path.resolve('./', from), path.resolve(modulesPath, newName))
+    cFiles.copy(path.resolve('./', from), path.resolve(modulesPath, tempName))
+
+    output.success('复制完成')
+  })
+
+program
+  .command('update <tempName> <from>')
+  .description('更新模版文件｜目录')
+  .action((tempName, from) => {
+
+    cFiles.copy(path.resolve('./', from), path.resolve(modulesPath, tempName), true)
+
+    output.success('复制完成')
+  })
+
+program
+  .command('cp <tempName> <toPath>')
+  .description('向模版添加文件｜目录')
+  .action((tempName, toPath) => {
+
+    cFiles.copy(path.resolve(modulesPath, tempName), path.resolve('./', toPath))
 
     output.success('复制完成')
   })

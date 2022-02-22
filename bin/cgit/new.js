@@ -5,6 +5,9 @@ const { program } = require('commander')
 const shell = require('../utils/shelljs')
 const chalk = require('chalk')
 
+// 注意
+// 1. commander的参数${}字符串参数 需要用单引号‘’， 双引号的"${}"会被解析成变量
+
 program.version(version)
 
 program
@@ -57,17 +60,19 @@ const MR = program.command('mr').description('pr管理')
 
 MR
   .command('create <branch>')
-  .option('-t, --title <title>', '标题')
+  .option('-t, --title <title>', '标题', '')
   .option('-a, --auto', '自动合并')
   .option('-m, --remove', '合并后删除原分支')
   .description('创建PR')
   .action((branch, options) => {
-    const t = options.title ? `--title "${options.title}"` : ''
+    console.log( options );
+    const t = options.title ? `--title '${options.title}'` : ''
     const m = options.remove ? '--remove-source-branch' : ''
 
     const f = t ? '' : '-f'
     // -f --fill自动填充标题
     // -y --yes不询问直接提交
+    // console.log( `glab mr create --target-branch ${branch} --description '' ${t} ${m} ${f} -y` );
     const res = shell.exec(`glab mr create --target-branch ${branch} --description '' ${t} ${m} ${f} -y`)
 
     if(options.auto) {

@@ -15,6 +15,9 @@
 npm install commander -s
 ```
 
+> 注：
+> commander的参数${}字符串参数 需要用单引号‘’， 双引号的"${}"会被解析成变量
+
 ### 3. 安装 chalk
 
 命令行高亮提示

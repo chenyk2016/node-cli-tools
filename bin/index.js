@@ -13,8 +13,8 @@ program.command('npm <originName>')
 .description('修改npm仓库源地址')
 .action((originName = 'npm') => {
   const originMap = {
-    'npm': 'registry https://www.npmjs.org',
-    'taobao': 'registry https://npm.taobao.org/dist',
+    'npm': 'registry https://registry.npmjs.org',
+    'taobao': 'registry https://registry.npm.taobao.org',
     'lianjia': 'registry https://registry.nlark.com/',
     'lianjianall': [
       'registry https://registry.nlark.com/',
@@ -28,7 +28,7 @@ program.command('npm <originName>')
   const origin = originMap[originName]
 
   if (origin) {
-    shell.exec(`npm config set ${origin}`)
+    shell.exec(`npm config set ${origin} --global`)
   }
 })
 

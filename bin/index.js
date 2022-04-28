@@ -15,14 +15,7 @@ program.command('npm <originName>')
   const originMap = {
     'npm': 'registry https://registry.npmjs.org',
     'taobao': 'registry https://registry.npm.taobao.org',
-    'lianjia': 'registry https://registry.nlark.com/',
-    'lianjianall': [
-      'registry https://registry.nlark.com/',
-      '@lianjia:registry http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/',
-      '@ke:registry http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/',
-      '@jiaoyi:registry http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/',
-      '@talent-fe:registry http://artifactory.intra.ke.com/artifactory/api/npm/npm-virtual/',
-    ]
+
   }
 
   const origin = originMap[originName]
